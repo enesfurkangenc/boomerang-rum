@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async>
+      (function(d, s) {
+        var js = d.createElement(s),
+          sc = d.getElementsByTagName(s)[0];
+
+        js.src = "http://localhost:9080/boomerang-1.0.0.js";
+        sc.parentNode.insertBefore(js, sc);
+      })(document, "script");
+    </script>
+  </head>
+  <body>
+    <iframe frameborder="0" id="iframe1"></iframe>
+    <iframe frameborder="0" id="iframe2"></iframe>
+    <iframe frameborder="0" id="iframe3"></iframe>
+    <script>
+      window.onerror = function(message, url, line, column, error) {
+        console.log("window.onerror: " + message);
+        console.log(error && error.stack ? error.stack : "(no stack)");
+      };
+    </script>
+    <!-- Root Initialize -->
+    <script>
+      if (document.addEventListener) {
+        document.addEventListener("onBoomerangLoaded", function(e) {
+          e.detail.BOOMR.subscribe("error", function(errors) {
+            console.log(errors);
+          });
+          e.detail.BOOMR.init({
+            beacon_url: "http://localhost:8888/beacon",
+            instrument_xhr: true,
+            AutoXHR: {
+              alwaysSendXhr: true,
+            },
+            autorun: true,
+            BW: {
+              enabled: true,
+            },
+            RT: {
+              cookie: "RT",
+              strict_referrer: false,
+            },
+            Errors: {
+              sendAfterOnload: true,
+              sendInterval: 5000,
+            },
+            IFrameDelay: {
+              enabled: true,
+            },
+          });
+          e.detail.BOOMR.t_end = new Date().getTime();
+          setTimeout(function() {
+            e.detail.BOOMR.page_ready();
+          }, 750);
+        });
+      }
+      // IE 6, 7, 8 we use onPropertyChange and look for propertyName === "onBoomerangLoaded"
+      else if (document.attachEvent) {
+        document.attachEvent("onpropertychange", function(e) {
+          if (!e) e = event;
+          if (e.propertyName === "onBoomerangLoaded") {
+            e.detail.BOOMR.init({
+              beacon_url: "http://localhost:8888/beacon",
+              instrument_xhr: true,
+              AutoXHR: {
+                alwaysSendXhr: true,
+              },
+              autorun: true,
+              BW: {
+                enabled: true,
+              },
+              RT: {
+                cookie: "RT",
+                strict_referrer: false,
+              },
+              Errors: {
+                sendAfterOnload: true,
+                sendInterval: 5000,
+              },
+              IFrameDelay: {
+                enabled: true,
+              },
+            });
+            e.detail.BOOMR.t_end = new Date().getTime();
+            setTimeout(function() {
+              e.detail.BOOMR.page_ready();
+            }, 750);
+          }
+        });
+      }
+    </script>
+    <!-- Root Get XHR -->
+    <script>
+      setTimeout(function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://jsonplaceholder.typicode.com/users/rootxhr");
+        xhr.send(null);
+      }, 1000);
+      setTimeout(function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://jsonplaceholder.typicode.com/users/2");
+        xhr.send(null);
+      }, 2000);
+    </script>
+    <!-- Iframe 1 Initialize -->
+    <script>
+      setTimeout(function() {
+        var iframeDocument = document.getElementById("iframe1").contentDocument;
+        var htmlcontent =
+          "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'" +
+          "http://www.w3.org/TR/html4/loose.dtd'>" +
+          "<html><head>" +
+          "<script>" +
+          "(function(d, s) {" +
+          "var js = d.createElement(s)," +
+          "sc = d.getElementsByTagName(s)[0];" +
+          "js.src='http://localhost:9080/boomerang-1.0.0.js';" +
+          "sc.parentNode.insertBefore(js, sc);" +
+          "}(document, 'script'));<" +
+          "/script>" +
+          "</head>" +
+          "<body>" +
+          "<h1>Iframe 1</h1>" +
+          "<script>" +
+          "if (document.addEventListener) {" +
+          "document.addEventListener('onBoomerangLoaded', function(e) {" +
+          "e.detail.BOOMR.subscribe('error', function(errors) {" +
+          "console.log(errors);" +
+          "});" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "});" +
+          "}" +
+          "else if (document.attachEvent) {" +
+          "document.attachEvent('onpropertychange', function(e) {" +
+          "if (!e) e = event;" +
+          "if (e.propertyName === 'onBoomerangLoaded') {" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "}" +
+          "});" +
+          "}<" +
+          "/script>" +
+          "<script>" +
+          "setTimeout(function() {" +
+          "var xhr = new XMLHttpRequest();" +
+          "xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/iframe1');" +
+          "xhr.send(null);" +
+          "}, 1000);<" +
+          "/script>" +
+          "</body></html>";
+        iframeDocument.open();
+        iframeDocument.write(htmlcontent);
+        iframeDocument.close();
+      }, 1000);
+    </script>
+    <!-- Iframe 2 Initialize -->
+    <script>
+      setTimeout(function() {
+        var iframeDocument = document.getElementById("iframe2").contentDocument;
+        var htmlcontent =
+          "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'" +
+          "http://www.w3.org/TR/html4/loose.dtd'>" +
+          "<html><head>" +
+          "<script>" +
+          "(function(d, s) {" +
+          "var js = d.createElement(s)," +
+          "sc = d.getElementsByTagName(s)[0];" +
+          "js.src='http://localhost:9080/boomerang-1.0.0.js';" +
+          "sc.parentNode.insertBefore(js, sc);" +
+          "}(document, 'script'));<" +
+          "/script>" +
+          "</head>" +
+          "<body>" +
+          "<h1>Iframe 2</h1>" +
+          "<script>" +
+          "if (document.addEventListener) {" +
+          "document.addEventListener('onBoomerangLoaded', function(e) {" +
+          "e.detail.BOOMR.subscribe('error', function(errors) {" +
+          "console.log(errors);" +
+          "});" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "});" +
+          "}" +
+          "else if (document.attachEvent) {" +
+          "document.attachEvent('onpropertychange', function(e) {" +
+          "if (!e) e = event;" +
+          "if (e.propertyName === 'onBoomerangLoaded') {" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "}" +
+          "});" +
+          "}<" +
+          "/script>" +
+          "<script>" +
+          "setTimeout(function() {" +
+          "var xhr = new XMLHttpRequest();" +
+          "xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/iframe2');" +
+          "xhr.send(null);" +
+          "}, 1000);<" +
+          "/script>" +
+          "</body></html>";
+        iframeDocument.open();
+        iframeDocument.write(htmlcontent);
+        iframeDocument.close();
+      }, 1000);
+    </script>
+    <!-- Iframe 3 Initialize -->
+    <script>
+      setTimeout(function() {
+        var iframeDocument = document.getElementById("iframe3").contentDocument;
+        var htmlcontent =
+          "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'" +
+          "http://www.w3.org/TR/html4/loose.dtd'>" +
+          "<html><head>" +
+          "<script>" +
+          "(function(d, s) {" +
+          "var js = d.createElement(s)," +
+          "sc = d.getElementsByTagName(s)[0];" +
+          "js.src='http://localhost:9080/boomerang-1.0.0.js';" +
+          "sc.parentNode.insertBefore(js, sc);" +
+          "}(document, 'script'));<" +
+          "/script>" +
+          "</head>" +
+          "<body>" +
+          "<h1>Iframe 3</h1>" +
+          "<script>" +
+          "if (document.addEventListener) {" +
+          "document.addEventListener('onBoomerangLoaded', function(e) {" +
+          "e.detail.BOOMR.subscribe('error', function(errors) {" +
+          "console.log(errors);" +
+          "});" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "});" +
+          "}" +
+          "else if (document.attachEvent) {" +
+          "document.attachEvent('onpropertychange', function(e) {" +
+          "if (!e) e = event;" +
+          "if (e.propertyName === 'onBoomerangLoaded') {" +
+          "e.detail.BOOMR.init({" +
+          "beacon_url: 'http://localhost:8888/beacon'," +
+          "instrument_xhr: true," +
+          "AutoXHR: {" +
+          "alwaysSendXhr: true," +
+          "}," +
+          "autorun: false," +
+          "BW: {" +
+          "enabled: true," +
+          "}," +
+          "RT: {" +
+          "cookie: 'RT'," +
+          "strict_referrer: false," +
+          "}," +
+          "Errors: {" +
+          "sendAfterOnload: true," +
+          "sendInterval: 5000," +
+          "}," +
+          "});" +
+          "e.detail.BOOMR.t_end = new Date().getTime();" +
+          "setTimeout(function() {" +
+          "e.detail.BOOMR.page_ready();" +
+          "}, 750);" +
+          "}" +
+          "});" +
+          "}<" +
+          "/script>" +
+          "<script>" +
+          "setTimeout(function() {" +
+          "var xhr = new XMLHttpRequest();" +
+          "xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/iframe3');" +
+          "xhr.send(null);" +
+          "}, 1000);<" +
+          "/script>" +
+          "<button id='getbutton'>Get Data<" +
+          "/button>" +
+          "<script>" +
+          "document.getElementById('getbutton').addEventListener('click', function() {" +
+          "var xhr = new XMLHttpRequest();" +
+          "xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/getbutton');" +
+          "xhr.send(null);" +
+          "})<" +
+          "/script>" +
+          "</body></html>";
+        iframeDocument.open();
+        iframeDocument.write(htmlcontent);
+        iframeDocument.close();
+      }, 1000);
+    </script>
+  </body>
+</html>

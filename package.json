@@ -1,0 +1,14 @@
+{
+  "name": "boomerang-rum",
+  "version": "1.0.0",
+  "description": "boomerang real user monitoring",
+  "main": "index.js",
+  "author": "Enes GENC",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
